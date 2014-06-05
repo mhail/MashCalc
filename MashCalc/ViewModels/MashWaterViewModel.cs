@@ -86,7 +86,7 @@ namespace MashCalc
 			SparageSize = ((GrainBill * MashThickness * 1.5f) /4)  - MashOutSize;
 
 			var totalH2o = StrikeSize + MashOutSize + SparageSize;
-			var boilVolume = totalH2o - (GrainBill * 0.125f); // Absorbsion Loss
+			var boilVolume = totalH2o - (GrainBill * 0.125f); // absorption loss
 
 			BatchSize = boilVolume - (boilVolume * (BoilTime / 60 * 0.1F)); 
 		}
