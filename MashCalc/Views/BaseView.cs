@@ -31,10 +31,10 @@ namespace MashCalc
 			return new BindableObjectFrom<B>(b, targetProperty);
 		}
 
-		public static B To<B, S>(this IBindableObjectFrom<B> f, S s, Expression<Func<S, object>> src, IValueConverter converter = null) where B : BindableObject where S : INotifyPropertyChanged
+		public static B To<B, S>(this IBindableObjectFrom<B> f, S s, Expression<Func<S, object>> src, BindingMode mode = BindingMode.Default, IValueConverter converter = null, string stringFormat = null) where B : BindableObject where S : INotifyPropertyChanged
 		{
 			f.Object.BindingContext = s;
-			f.Object.SetBinding(f.TargetProperty, src, BindingMode.TwoWay, converter);
+			f.Object.SetBinding(f.TargetProperty, src,mode, converter, stringFormat);
 			return f.Object;
 		}
 

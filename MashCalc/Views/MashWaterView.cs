@@ -6,73 +6,86 @@ namespace MashCalc
 {
 	public class MashWaterView : BaseView<MashWaterViewModel>
 	{
+		private static readonly NumberTypeConverter NumberConverter = new NumberTypeConverter();
+
 		public MashWaterView () : base()
 		{
-			var numberConverter = new NumberTypeConverter ();
+			this.BackgroundColor = new Color (243/255.0, 167/255.0, 19/255.0);
 
-			var g = new Grid () { 
-				Padding = new Thickness( 5, 20, 5, 0 ),
-				HorizontalOptions = LayoutOptions.CenterAndExpand,
-				VerticalOptions = LayoutOptions.CenterAndExpand,
+			this.Content = new ScrollView {
+				Content = new Grid { 
+					Padding = new Thickness (5, 20, 5, 0),
+					HorizontalOptions = LayoutOptions.CenterAndExpand,
+					VerticalOptions = LayoutOptions.CenterAndExpand,
+				}.Build (b => {
+
+					b.RowSpan (new Label { 
+						Text = "Brewday Mash Calculator", 
+						Font = Font.BoldSystemFontOfSize (NamedSize.Large)
+					}, 2);
+
+					b.AddRow (
+						"Grain Bill:".ToLabel (), 
+						new Entry () { Placeholder = "In lbs", Keyboard = Keyboard.Numeric, }
+						.Bind (Entry.TextProperty).To (this.ViewModel, vm => vm.GrainBill, converter: NumberConverter)
+					);
+
+					b.AddRow (
+						"Boil Time (Min):".ToLabel (),
+						new Entry () { Placeholder = "Minutes", Keyboard = Keyboard.Numeric, }
+						.Bind (Entry.TextProperty).To (this.ViewModel, vm => vm.BoilTime, converter: NumberConverter)
+					);
+				
+					b.AddRow (
+						"Mash Thickness:".ToLabel (),
+						new Entry () { Placeholder = "Ratio 1 to 1.5", Keyboard = Keyboard.Numeric, }
+						.Bind (Entry.TextProperty).To (this.ViewModel, vm => vm.MashThickness, converter: NumberConverter)
+					);
+
+					b.AddRow (
+						"Target Mash Temp:".ToLabel (),
+						new Entry () { Placeholder = "Deg f", Keyboard = Keyboard.Numeric, }
+						.Bind (Entry.TextProperty).To (this.ViewModel, vm => vm.TargetMashTemp, converter: NumberConverter)
+					);
+
+					b.AddRow (
+						"Grain Temp:".ToLabel (),
+						new Entry () { Placeholder = "Deg f", Keyboard = Keyboard.Numeric, }
+						.Bind (Entry.TextProperty).To (this.ViewModel, vm => vm.GrainTemp, converter: NumberConverter)
+					);
+
+					b.AddRow (
+						"Strike Temp (Deg f):".ToLabel (),
+						string.Empty.ToLabel ()
+						.Bind (Label.TextProperty).To (this.ViewModel, vm => vm.StrikeTemp, converter: NumberConverter)
+					);
+
+					b.AddRow (
+						"Strike Size (Gal):".ToLabel (),
+						string.Empty.ToLabel ()
+						.Bind (Label.TextProperty).To (this.ViewModel, vm => vm.StrikeSize, converter: NumberConverter)
+					);
+
+					b.AddRow (
+						"Mashout (Gal) Boiling:".ToLabel (),
+						string.Empty.ToLabel ()
+						.Bind (Label.TextProperty).To (this.ViewModel, vm => vm.MashOutSize, converter: NumberConverter)
+					);
+
+					b.AddRow (
+						"Sparage Size:".ToLabel (),
+						string.Empty.ToLabel ()
+						.Bind (Label.TextProperty).To (this.ViewModel, vm => vm.SparageSize, converter: NumberConverter)
+					);
+
+					b.AddRow (
+						"Batch Size (Gal):".ToLabel (),
+						string.Empty.ToLabel ()
+						.Bind (Label.TextProperty).To (this.ViewModel, vm => vm.BatchSize, converter: NumberConverter)
+					);
+
+				})
 			};
-			var row = 0;
-			g.Children.Add (new Label () { Text = "Brewday Mash Calculator", Font = Font.BoldSystemFontOfSize(NamedSize.Large)}, 0, 2, row, row + 1);
-			row++;
-			g.Children.Add (new Label () { Text = "Grain Bill:", }, 0, row);
-			g.Children.Add (new Entry () { Placeholder = "In lbs", Keyboard = Keyboard.Numeric,}
-				.Bind(Entry.TextProperty).To(this.ViewModel, vm=>vm.GrainBill, numberConverter), 1, row);
-
-			row++;
-			g.Children.Add (new Label () { Text = "Boil Time (Min):", }, 0, row);
-			g.Children.Add (new Entry () { Placeholder = "Minutes", Keyboard = Keyboard.Numeric,}
-				.Bind(Entry.TextProperty).To(this.ViewModel, vm=>vm.BoilTime, numberConverter), 1, row);
-
-			row++;
-			g.Children.Add (new Label () { Text = "Mash Thickness:", }, 0, row);
-			g.Children.Add (new Entry () { Placeholder = "Ratio 1 to 1.5", Keyboard = Keyboard.Numeric,}
-				.Bind(Entry.TextProperty).To(this.ViewModel, vm=>vm.MashThickness, numberConverter), 1, row);
-
-			row++;
-			g.Children.Add (new Label () { Text = "Target Mash Temp:", }, 0, row);
-			g.Children.Add (new Entry () { Placeholder = "Deg f", Keyboard = Keyboard.Numeric,}
-				.Bind(Entry.TextProperty).To(this.ViewModel, vm=>vm.TargetMashTemp, numberConverter), 1, row);
-
-			row++;
-			g.Children.Add (new Label () { Text = "Grain Temp:", }, 0, row);
-			g.Children.Add (new Entry () { Placeholder = "Deg f", Keyboard = Keyboard.Numeric,}
-				.Bind(Entry.TextProperty).To(this.ViewModel, vm=>vm.GrainTemp, numberConverter), 1, row);
-
-			row++;
-			g.Children.Add (new Label () { Text = "Strike Temp (Deg f):", }, 0, row);
-			g.Children.Add (new Label () { }
-				.Bind(Label.TextProperty).To(this.ViewModel, vm=>vm.StrikeTemp, numberConverter), 1, row);
-
-			row++;
-			g.Children.Add (new Label () { Text = "Strike Size (Gal):", }, 0, row);
-			g.Children.Add (new Label () { }
-				.Bind(Label.TextProperty).To(this.ViewModel, vm=>vm.StrikeSize, numberConverter), 1, row);
-
-			row++;
-			g.Children.Add (new Label () { Text = "Mashout (Gal) Boiling:", }, 0, row);
-			g.Children.Add (new Label () { }
-				.Bind(Label.TextProperty).To(this.ViewModel, vm=>vm.MashOutSize, numberConverter), 1, row);
-
-			row++;
-			g.Children.Add (new Label () { Text = "Sparage Size:", }, 0, row);
-			g.Children.Add (new Label () { }
-				.Bind(Label.TextProperty).To(this.ViewModel, vm=>vm.SparageSize, numberConverter), 1, row);
-
-			row++;
-			g.Children.Add (new Label () { Text = "Batch Size (Gal):", }, 0, row);
-			g.Children.Add (new Label () { }
-				.Bind(Label.TextProperty).To(this.ViewModel, vm=>vm.BatchSize, numberConverter), 1, row);
-
-
-			var scroll = new ScrollView () {
-				Content = g,
-			};
-
-			Content = scroll;
 		}
 	}
 }
